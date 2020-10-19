@@ -26,7 +26,7 @@ const Leaderboard = () => {
     const [ leaderboard, setLeaderboard ] = useState([])
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/leaderboard/')
+        axios.get('https://virtual-ipl-api.herokuapp.com/api/leaderboard/')
         .then((response) => {
             console.log(response.data)
             setLeaderboard(response.data)

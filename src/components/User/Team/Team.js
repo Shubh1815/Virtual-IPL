@@ -22,7 +22,7 @@ const Team = (props) => {
     const classes = useStyle()
 
     useEffect(() => {
-        axios.get(`http://127.0.0.1:8000/api/team/${team_no}/`)
+        axios.get(`https://virtual-ipl-api.herokuapp.com/api/team/${team_no}/`)
         .then((response) => {
             console.log(response.data)
             setState(response.data)

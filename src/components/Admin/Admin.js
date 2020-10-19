@@ -41,7 +41,7 @@ const Admin = () => {
     const classes = useStyle()
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/player/')
+        axios.get('https://virtual-ipl-api.herokuapp.com/api/player/')
         .then((response) => {
             setPlayers(response.data)
         })
@@ -80,7 +80,7 @@ const Admin = () => {
                 team: Number(team),
             }
             
-            axios.put(`http://127.0.0.1:8000/api/player/${data.id}/`, data, {
+            axios.put(`https://virtual-ipl-api.herokuapp.com/api/player/${data.id}/`, data, {
                 'headers': {
                     'Authorization': `Token ${token}`,
                 }

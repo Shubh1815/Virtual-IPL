@@ -48,7 +48,7 @@ const LoginPage = () => {
             'username': username,
             'password': password,
         }
-        axios.post('http://127.0.0.1:8000/auth/login/', data)
+        axios.post('https://virtual-ipl-api.herokuapp.com/auth/login/', data)
         .then((response) => {
             localStorage.setItem('token', response.data.key)
             console.log(response.data)
