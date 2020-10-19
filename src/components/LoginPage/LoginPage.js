@@ -3,6 +3,7 @@ import Context from '../../Context/Context'
 
 import { Paper, Box, Grid, TextField, Button } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import { makeStyles } from '@material-ui/core/styles'
 
 import axios from 'axios'
@@ -20,6 +21,7 @@ const useStyle = makeStyles({
 })
 
 const LoginPage = () => {
+    
     const context = useContext(Context)
     const classes = useStyle()
 
@@ -30,7 +32,6 @@ const LoginPage = () => {
     const [ password, setPassword ] = useState('')
 
     useEffect(() => {
-        console.log(context.isAuth)
         if(context.isAuth)
             setRedirect('/admin')
     }, [ context.isAuth ])
@@ -48,16 +49,18 @@ const LoginPage = () => {
             'username': username,
             'password': password,
         }
+        context.setLoading(true)
         axios.post('https://virtual-ipl-api.herokuapp.com/auth/login/', data)
         .then((response) => {
             localStorage.setItem('token', response.data.key)
             console.log(response.data)
+            context.setLoading(false)
             context.handleLogin()
-            
         })
         .catch((err) => {
             console.log(err.response)
             setError(err.response.data.non_field_errors[0])
+            context.setLoading(false)
         })
     }
 
@@ -95,7 +98,7 @@ const LoginPage = () => {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <Button color="primary" variant="contained" onClick={submit}>Log In!</Button>
+                        <Button color="primary" variant="contained" onClick={submit} disabled={context.loading}>Log In!  {context.loading && < CircularProgress size="20px" color="secondary" style={{padding: '0 5px'}}/> }</Button>
                     </Grid>
                 </Grid>
             </Box>

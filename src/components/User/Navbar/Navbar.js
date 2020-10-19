@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { AppBar, Toolbar, Typography, InputBase } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import LinearProgress from '@material-ui/core/LinearProgress'
 import SportsCricketIcon from '@material-ui/icons/SportsCricketTwoTone'
 import SearchIcon from '@material-ui/icons/Search'
 import { Redirect } from 'react-router-dom'
+
+import Context from '../../../Context/Context'
 
 const useStyle = makeStyles((theme) => ({
     title: {
@@ -41,7 +44,10 @@ const useStyle = makeStyles((theme) => ({
 const Navbar = () => {
 
     const classes = useStyle()
-    const [team, setTeam] = useState(null)
+
+    const { loading } = useContext(Context)
+
+    const [ team, setTeam] = useState(null)
     const [ redirect, setRedirect ] = useState('')
 
     const handleChange = (event) => {
@@ -84,6 +90,7 @@ const Navbar = () => {
 
                 </Toolbar>
             </AppBar>
+            { loading && <LinearProgress style={{height: '5px'}} color="primary" />}
         </React.Fragment>
     )
 }

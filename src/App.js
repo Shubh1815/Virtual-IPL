@@ -10,7 +10,9 @@ import './App.css'
 
 function App() {
   const token = localStorage.getItem('token')
+
   const [ isAuth, setIsAuth ] = useState(!token ? false : true)
+  const [ loading, setLoading ] = useState(false)
 
   const handleLogin = () => {
     setIsAuth(true)
@@ -24,7 +26,9 @@ function App() {
       <Context.Provider value={{
         'isAuth': isAuth,
         'handleLogin': handleLogin,
-        'handleLogOut': handleLogOut
+        'handleLogOut': handleLogOut,
+        'loading': loading,
+        'setLoading': setLoading,
       }}>
         <Router>
           <Switch>

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Box, Paper, TableContainer, Table, TableBody, TableHead, TableRow, TableCell } from '@material-ui/core'
 import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import styles from '../../style'
 
+import Context from '../../../Context/Context'
 
 import img from '../../../assets/batsmen.jpg'
 import axios from 'axios'
@@ -23,16 +24,21 @@ const Top10 = () => {
     const classes = useStyle()
     const [ top10, setTop10 ] = useState([])
 
+    const { setLoading } = useContext(Context)
+
     useEffect(() => {
+        setLoading(true)
         axios.get('https://virtual-ipl-api.herokuapp.com/api/top10/')
         .then((response) => {
             console.log(response.data)
             setTop10(response.data.Top10)
+            setLoading(false)
         })
         .catch((err) => {
+            setLoading(false)
             console.log(err)
         })
-    }, [])
+    }, [ setLoading ])
 
     return (
         <Box display="flex" justifyContent="center" className={classes.root}>

@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { Box, Typography, Paper, Button } from '@material-ui/core'
 import { TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core'
+import LinearProgress from '@material-ui/core/LinearProgress'
 import { makeStyles } from '@material-ui/core/styles'
 import Navbar from '../Navbar/Navbar'
 
+import Context from '../../../Context/Context'
 import styles  from '../../style'
 
 import axios from 'axios'
@@ -25,16 +27,21 @@ const Leaderboard = () => {
     const classes = useStyle()
     const [ leaderboard, setLeaderboard ] = useState([])
 
+    const { loading, setLoading } = useContext(Context)
+
     useEffect(() => {
+        setLoading(true)
         axios.get('https://virtual-ipl-api.herokuapp.com/api/leaderboard/')
         .then((response) => {
             console.log(response.data)
             setLeaderboard(response.data)
+            setLoading(false)
         })
         .catch((err) => {
             console.log(err)
+            setLoading(false)
         })
-    }, [])
+    }, [ setLoading ])
 
     return (
         <React.Fragment>
@@ -46,6 +53,7 @@ const Leaderboard = () => {
                     <div className={classes.tableTitle}>
                         <Typography component="div" variant="h4" className={classes.title}>Leaderboard</Typography>
                     </div>
+                    {loading && <LinearProgress />}
                     <Table>
                         <TableHead className={classes.tableHeader}>
                             <TableRow>
