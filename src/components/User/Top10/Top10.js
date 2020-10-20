@@ -6,12 +6,13 @@ import styles from '../../style'
 
 import Context from '../../../Context/Context'
 
-import img from '../../../assets/batsmen.jpg'
+import img from '../../../assets/batsmen.png'
 import axios from 'axios'
 
 const useStyle = makeStyles({
     ...styles,
     table: {
+        ...styles.table,
         'margin': '0 10px',
         'max-width': '992px',
         'min-height': '350px',
@@ -57,7 +58,7 @@ const Top10 = () => {
                     </TableHead>
                     <TableBody className={classes.tableBody}>
                         {top10.map((player, i) => ( 
-                            <TableRow key={player.id}>
+                            <TableRow key={player.id + i}>
                                 <TableCell align="center">{i + 1}</TableCell>
                                 <TableCell align="center">{player.team}</TableCell>
                                 <TableCell align="center">{player.player_name}</TableCell>

@@ -10,7 +10,7 @@ import Context from '../../../Context/Context'
 import styles  from '../../style'
 
 import axios from 'axios'
-import img from '../../../assets/batsmen.jpg'
+import img from '../../../assets/batsmen.png'
 
 const useStyle = makeStyles({
     ...styles,
@@ -24,6 +24,8 @@ const useStyle = makeStyles({
 
 const Leaderboard = () => {
 
+    const token = localStorage.getItem('token')
+
     const classes = useStyle()
     const [ leaderboard, setLeaderboard ] = useState([])
 
@@ -31,7 +33,11 @@ const Leaderboard = () => {
 
     useEffect(() => {
         setLoading(true)
-        axios.get('https://virtual-ipl-api.herokuapp.com/api/leaderboard/')
+        axios.get('https://virtual-ipl-api.herokuapp.com/api/leaderboard/', {
+            'headers': {
+                'Authorization': `Token ${token}`,
+            }
+        })
         .then((response) => {
             console.log(response.data)
             setLeaderboard(response.data)
@@ -41,7 +47,7 @@ const Leaderboard = () => {
             console.log(err)
             setLoading(false)
         })
-    }, [ setLoading ])
+    }, [ setLoading, token ])
 
     return (
         <React.Fragment>

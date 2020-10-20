@@ -3,7 +3,7 @@ import { Box, Paper, TableContainer, Table, TableBody, TableHead, TableRow, Tabl
 import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import styles from '../../style'
-import img from '../../../assets/batsmen.jpg'
+import img from '../../../assets/batsmen.png'
 import axios from 'axios'
 
 import Context from '../../../Context/Context'

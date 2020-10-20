@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Context from '../../Context/Context'
 
-import { Paper, Box, Grid, TextField, Button } from '@material-ui/core'
+import { Container, Paper, Box, Grid, TextField, Button, Typography } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { makeStyles } from '@material-ui/core/styles'
+
+import SportsCricketIcon from '@material-ui/icons/SportsCricket'
 
 import axios from 'axios'
 import { Redirect } from 'react-router-dom'
@@ -71,37 +73,40 @@ const LoginPage = () => {
     return (
         <React.Fragment>
             { redirect && redirectToAdmin() }
-            <Box display="flex" justifyContent="center" alignItems="center" className={classes.root}>
-                <Grid container spacing={3} component={Paper} className={classes.form}>
-                    <Grid item xs={12}>
-                        {error && <Alert severity="error">{error}</Alert> }
+            <Container>
+                <Box display="flex" justifyContent="center" alignItems="center" className={classes.root}>
+                    <Grid container spacing={3} component={Paper} className={classes.form}>
+                        <Grid item xs={12}>
+                            <Typography component="div" variant="h4"><SportsCricketIcon color="secondary" fontSize="large"/> Virtual IPL</Typography>
+                            {error && <Alert severity="error">{error}</Alert> }
+                        </Grid>
+                        
+                        <Grid item xs={12}>
+                            <TextField 
+                                autoFocus
+                                label="Username"
+                                value={username}
+                                variant="outlined"
+                                fullWidth 
+                                onChange={handleUsername}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                label="Password"
+                                type="password"
+                                variant="outlined"
+                                value={password}
+                                fullWidth    
+                                onChange={handlePassword}     
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button color="primary" variant="contained" onClick={submit} disabled={context.loading}>Log In!  {context.loading && < CircularProgress size="20px" color="secondary" style={{padding: '0 5px'}}/> }</Button>
+                        </Grid>
                     </Grid>
-                    
-                    <Grid item xs={12}>
-                        <TextField 
-                            autoFocus
-                            label="Username"
-                            value={username}
-                            variant="outlined"
-                            fullWidth 
-                            onChange={handleUsername}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            label="Password"
-                            type="password"
-                            variant="outlined"
-                            value={password}
-                            fullWidth    
-                            onChange={handlePassword}     
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Button color="primary" variant="contained" onClick={submit} disabled={context.loading}>Log In!  {context.loading && < CircularProgress size="20px" color="secondary" style={{padding: '0 5px'}}/> }</Button>
-                    </Grid>
-                </Grid>
-            </Box>
+                </Box>
+            </Container>
         </React.Fragment>
     )
 }

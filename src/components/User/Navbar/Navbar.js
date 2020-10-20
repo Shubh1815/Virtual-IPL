@@ -1,17 +1,15 @@
-import React, { useState, useContext } from 'react'
-import { AppBar, Toolbar, Typography, InputBase } from '@material-ui/core'
+import React, { useState, useEffect, useContext } from 'react'
+import { Redirect } from 'react-router-dom'
+import { InputBase } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import LinearProgress from '@material-ui/core/LinearProgress'
-import SportsCricketIcon from '@material-ui/icons/SportsCricketTwoTone'
-import SearchIcon from '@material-ui/icons/Search'
-import { Redirect } from 'react-router-dom'
 
+import SearchIcon from '@material-ui/icons/Search'
+
+import MainNavBar from '../../MainNavbar/MainNavbar'
 import Context from '../../../Context/Context'
 
 const useStyle = makeStyles((theme) => ({
-    title: {
-        'flex-grow': 1,
-    },
     search: {
         'position': 'relative',
         'border-radius': '10px',
@@ -47,49 +45,51 @@ const Navbar = () => {
 
     const { loading } = useContext(Context)
 
-    const [ team, setTeam] = useState(null)
+    const [ team, setTeam] = useState('')
     const [ redirect, setRedirect ] = useState('')
+
+    useEffect(()=> {
+        setRedirect('')
+    }, [ team ])
 
     const handleChange = (event) => {
         setTeam(event.target.value)
+        console.log(event.target.value)
     }
 
     const handleTeam = (event) => {
+        console.log(team)
         if(event.key === 'Enter' && !isNaN(team)){
             setRedirect(`/team/${team}`)
         }
     }
 
     const redirectToTeamPage = () => {
+        if(team)
+            setTeam('')
         return <Redirect to={redirect} />
     }
 
     return (
         <React.Fragment>
             {redirect && redirectToTeamPage()}
-            <AppBar position="sticky">
-                <Toolbar>
-                    <Typography component="div" variant="h5" className={classes.title}>
-                        <SportsCricketIcon  color="secondary" fontSize="large"/> Virtual IPL 
-                    </Typography>
-
-                    <div className={classes.search}>
-                        <span className={classes.searchIcon}>
-                            <SearchIcon />
-                        </span>
-                        <InputBase
-                            placeholder="Team No."
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.input
-                            }}
-                            onChange={(event) => handleChange(event)}
-                            onKeyUp={(event) => handleTeam(event)}
-                        />
-                    </div>
-
-                </Toolbar>
-            </AppBar>
+            <MainNavBar>
+                <div className={classes.search}>
+                    <span className={classes.searchIcon}>
+                        <SearchIcon />
+                    </span>
+                    <InputBase
+                        classes={{
+                            root: classes.inputRoot,
+                            input: classes.input
+                        }}
+                        onChange={(event) => handleChange(event)}
+                        onKeyUp={(event) => handleTeam(event)}
+                        placeholder="Team No."
+                        value={team}
+                    />
+                </div>
+            </MainNavBar>
             { loading && <LinearProgress style={{height: '5px'}} color="primary" />}
         </React.Fragment>
     )

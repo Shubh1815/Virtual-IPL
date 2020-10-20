@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Box from '@material-ui/core/Box'
 import { makeStyles } from '@material-ui/core/styles'
-import { Grid, Paper } from '@material-ui/core'
+import { Grid, Paper, Container } from '@material-ui/core'
 import { Typography, TextField, Button } from '@material-ui/core'
 import { Alert, Autocomplete } from '@material-ui/lab'
 
@@ -14,13 +14,14 @@ import axios from 'axios'
 
 const useStyle = makeStyles({
     root: {
-        'min-height': 'calc(100vh)',
+        'min-height': 'calc(100vh - 64px)',
     },
     form: {
         'width': '500px',
         'background': 'white',
         'padding': '15px',
         'border-radius': '10px',
+        'transform': 'translateY(-12%)',
     },
     button:{
         float:'right',
@@ -102,56 +103,58 @@ const Admin = () => {
             <Navbar>
                 <Button component={Link} to="/leaderboard" variant="contained" size="small" >Leaderboard</Button>
             </Navbar>
-            <Box display='flex' justifyContent='center' alignItems='center' className={classes.root}>
-                <Grid container spacing={2} className={classes.form} component={Paper} elevation={3}>
-        
-                    <Grid item xs={12}>
-                        <Typography component="div" variant="h4"><SportsCricketIcon color="secondary" fontSize="large"/> Virtual IPL</Typography>
-                        { error ? (<Alert severity="error">{error}</Alert>) : null }
-                        { success ? (<Alert severity="success">{success}</Alert>): null}
-                    </Grid>
+            <Container>
+                <Box display='flex' justifyContent='center' alignItems='center' className={classes.root}>
+                    <Grid container spacing={2} className={classes.form} component={Paper} elevation={3}>
+            
+                        <Grid item xs={12}>
+                            <Typography component="div" variant="h4"><SportsCricketIcon color="secondary" fontSize="large"/> Virtual IPL</Typography>
+                            { error ? (<Alert severity="error">{error}</Alert>) : null }
+                            { success ? (<Alert severity="success">{success}</Alert>): null}
+                        </Grid>
 
-                    <Grid item xs={12}>
-                        <TextField 
-                            autoFocus
-                            fullWidth
-                            label="Team No."
-                            onChange={handleTeam}
-                            required
-                            type="number"
-                            value={team}
-                            variant="outlined"
-                        />
-                    </Grid>
-                    
-                    <Grid item xs={12}>
-                        <Autocomplete 
-                            getOptionLabel={(player) => player.player_name}
-                            onChange={handlePlayer}
-                            options={players}
-                            renderInput={(params) => <TextField {...params} label="Player Name" variant="outlined" required />}
-                            value={player}  
-                        />
-                    </Grid>
+                        <Grid item xs={12}>
+                            <TextField 
+                                autoFocus
+                                fullWidth
+                                label="Team No."
+                                onChange={handleTeam}
+                                required
+                                type="number"
+                                value={team}
+                                variant="outlined"
+                            />
+                        </Grid>
+                        
+                        <Grid item xs={12}>
+                            <Autocomplete 
+                                getOptionLabel={(player) => player.player_name}
+                                onChange={handlePlayer}
+                                options={players}
+                                renderInput={(params) => <TextField {...params} label="Player Name" variant="outlined" required />}
+                                value={player}  
+                            />
+                        </Grid>
 
-                    <Grid item xs={12}>
-                        <TextField 
-                            fullWidth
-                            label="Price (Crores)"
-                            onChange={handlePrice}
-                            required
-                            type="number"
-                            variant="outlined"
-                            value={price}
-                        />
-                    </Grid>
+                        <Grid item xs={12}>
+                            <TextField 
+                                fullWidth
+                                label="Price (Crores)"
+                                onChange={handlePrice}
+                                required
+                                type="number"
+                                variant="outlined"
+                                value={price}
+                            />
+                        </Grid>
 
-                    <Grid item xs={12}>
-                        <Button type="submit" variant="contained" color="primary" className={classes.button} onClick={handleSubmit}>Submit</Button>
-                    </Grid>
+                        <Grid item xs={12}>
+                            <Button type="submit" variant="contained" color="primary" className={classes.button} onClick={handleSubmit}>Submit</Button>
+                        </Grid>
 
-                </Grid>
-            </Box>   
+                    </Grid>
+                </Box>   
+            </Container>
         </React.Fragment>     
     )
 }

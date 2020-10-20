@@ -4,6 +4,7 @@ const styles = {
         'width': '100%',
     },
     table: {
+        'background-color': '#1b1b1bc4',
         'margin': '0 10px',
         'max-width': '764px',
         'min-height': '350px',
@@ -27,8 +28,8 @@ const styles = {
     },
     tableBody: {
         'min-height': '350px',
-        '& > tr:nth-child(even)': {
-            'background-color': 'whitesmoke',
+        '& > tr > td':{
+            'color': 'white',
         }
     },
     img: {
