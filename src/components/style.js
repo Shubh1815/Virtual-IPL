@@ -1,6 +1,6 @@
 const styles = {
     root: {
-        'margin-top': '50px',
+        'margin': '50px 0',
         'width': '100%',
     },
     table: {
