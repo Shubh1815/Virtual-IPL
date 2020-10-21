@@ -7,23 +7,17 @@ import Context from '../../../Context/Context'
 import axios from 'axios'
 
 const Top10 = () => {
-    let prevTop10 = []
-
-    if(JSON.parse(localStorage.getItem("top10")) !== null)
-        prevTop10 = JSON.parse(localStorage.getItem('top10'))
-        
-    const [ top10, setTop10 ] = useState(prevTop10)
+    
+    const [ top10, setTop10 ] = useState([])
     const { setLoading } = useContext(Context)
 
     useEffect(() => {
         setLoading(true)
         axios.get('https://virtual-ipl-api.herokuapp.com/api/top10/')
         .then((response) => {
-            const data = JSON.parse(response.data)
-            console.log(data)
-            setTop10(data.top10)
+            console.log(response.data)
+            setTop10(response.data.top10)
             setLoading(false)
-            localStorage.setItem('top10', JSON.stringify(data.top10))
         })
         .catch((err) => {
             setLoading(false)
@@ -32,9 +26,10 @@ const Top10 = () => {
     }, [ setLoading ])
 
     const createRows = () => (
-        top10.map((player, i) => (
-            [i + 1, player.team, player.player_name, `${player.price} CR`]
-        ))
+        top10.map((player, i) => {
+            player = JSON.parse(player)
+            return [i + 1, player.team, player.player_name, `${player.price} CR`]
+        })
     )
 
     return (
