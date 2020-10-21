@@ -6,7 +6,7 @@ const styles = {
     table: {
         'background-color': '#1b1b1bc4',
         'margin': '0 10px',
-        'max-width': '764px',
+        // 'max-width': '764px',
         'min-height': '350px',
         'position': 'relative',
     },

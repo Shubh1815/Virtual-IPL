@@ -14,6 +14,10 @@ import img from '../../../assets/batsmen.png'
 
 const useStyle = makeStyles({
     ...styles,
+    table:{
+        ...styles.table,
+        'max-width': '764px',
+    },
     tableBody: {
         '& > tr > td': {
             'background-color': 'inherit',

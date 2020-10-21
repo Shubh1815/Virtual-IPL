@@ -1,14 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Box, Paper, TableContainer, Table, TableBody, TableHead, TableRow, TableCell } from '@material-ui/core'
-import { Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import styles from '../../style'
-import img from '../../../assets/batsmen.png'
-import axios from 'axios'
 
+import DataTable from '../DataTable/DataTable'
 import Context from '../../../Context/Context'
 
-const useStyle = makeStyles(styles)
+import axios from 'axios'
 
 const Team = (props) => {
 
@@ -22,8 +17,6 @@ const Team = (props) => {
         },
         'players': [],  
     })
-
-    const classes = useStyle()
 
     useEffect(() => {
         setLoading(true)
@@ -39,36 +32,26 @@ const Team = (props) => {
         })
     }, [ team_no, setLoading ] )
 
+    const createRows = () => (
+        state.players.map((player, i) => (
+            [i + 1, player.player_name, player.player_type, `${player.price} CR`]
+        ))
+    )
+
     return (
-        <Box maxWidth="md" className={classes.root} display='flex' justifyContent='center'>
-            <TableContainer component={Paper} className={classes.table}>
-                <div className={classes.tableTitle}>
-                    <Typography component="div" variant="h4" className={classes.title}>Team {state.team.team_no}</Typography>
-                    <Typography component="div" variant="subtitle1" className={classes.title}>Budget: {state.team.budget} CR</Typography>
-                </div>
-                <Table>
-                    <TableHead className={classes.tableHeader}>
-                        <TableRow>
-                            <TableCell align="center" width="10%">Sr No.</TableCell>
-                            <TableCell align="center" width="40%">Player Name</TableCell>
-                            <TableCell align="center" width="25%">Type</TableCell>
-                            <TableCell align="center" width="25%">Price (Crores)</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody className={classes.tableBody}>
-                        {state.players.map((player, i) => (
-                            <TableRow key={player.id}>
-                                <TableCell align="center">{i + 1}</TableCell>
-                                <TableCell align="center">{player.player_name}</TableCell>
-                                <TableCell align="center">{player.player_type}</TableCell>
-                                <TableCell align="center">{player.price} Cr</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-                { !state.players.length ? <img className={classes.img} src={img} alt="batsmen"/> : null }
-            </TableContainer>
-        </Box>
+        <DataTable 
+            title={`Team ${state.team.team_no}`}
+            subtitle={`Budget: ${state.team.budget} CR`}
+            rows={createRows()} 
+            cols={[
+                'Sr No.', 
+                'Player Name',
+                'Type',
+                'Price (Crores)'
+            ]}
+            width={['10%', '40%', '25%', '25%']} 
+            maxWidth="764px"
+        />
     )
 }
 

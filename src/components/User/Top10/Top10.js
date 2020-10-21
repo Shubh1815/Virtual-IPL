@@ -1,39 +1,29 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Box, Paper, TableContainer, Table, TableBody, TableHead, TableRow, TableCell } from '@material-ui/core'
-import { Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import styles from '../../style'
 
+import DataTable from '../DataTable/DataTable'
 import Context from '../../../Context/Context'
 
-import img from '../../../assets/batsmen.png'
+
 import axios from 'axios'
 
-const useStyle = makeStyles({
-    ...styles,
-    table: {
-        ...styles.table,
-        'margin': '0 10px',
-        'max-width': '992px',
-        'min-height': '350px',
-        'position': 'relative',
-    },
-})
-
 const Top10 = () => {
+    let prevTop10 = []
 
-    const classes = useStyle()
-    const [ top10, setTop10 ] = useState([])
-
+    if(JSON.parse(localStorage.getItem("top10")) !== null)
+        prevTop10 = JSON.parse(localStorage.getItem('top10'))
+        
+    const [ top10, setTop10 ] = useState(prevTop10)
     const { setLoading } = useContext(Context)
 
     useEffect(() => {
         setLoading(true)
         axios.get('https://virtual-ipl-api.herokuapp.com/api/top10/')
         .then((response) => {
-            console.log(response.data)
-            setTop10(response.data.Top10)
+            const data = JSON.parse(response.data)
+            console.log(data)
+            setTop10(data.top10)
             setLoading(false)
+            localStorage.setItem('top10', JSON.stringify(data.top10))
         })
         .catch((err) => {
             setLoading(false)
@@ -41,35 +31,25 @@ const Top10 = () => {
         })
     }, [ setLoading ])
 
+    const createRows = () => (
+        top10.map((player, i) => (
+            [i + 1, player.team, player.player_name, `${player.price} CR`]
+        ))
+    )
+
     return (
-        <Box display="flex" justifyContent="center" className={classes.root}>
-            <TableContainer className={classes.table} component={Paper}>
-                <div className={classes.tableTitle}>
-                    <Typography component="div" variant="h4" className={classes.title}>TOP 10</Typography>
-                </div>
-                <Table>
-                    <TableHead className={classes.tableHeader}>
-                        <TableRow>
-                            <TableCell align="center" width="10%">Sr No.</TableCell>
-                            <TableCell align="center" width="20%">Team No.</TableCell>
-                            <TableCell align="center" width="40%">Player Name</TableCell>
-                            <TableCell align="center" width="30%">Price (CR)</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody className={classes.tableBody}>
-                        {top10.map((player, i) => ( 
-                            <TableRow key={player.id + i}>
-                                <TableCell align="center">{i + 1}</TableCell>
-                                <TableCell align="center">{player.team}</TableCell>
-                                <TableCell align="center">{player.player_name}</TableCell>
-                                <TableCell align="center">{player.price}</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-                { !top10.length ? <img className={classes.img} src={img} alt="batsmen"/> : null }
-            </TableContainer>
-        </Box>
+        <DataTable
+            title="TOP 10"
+            cols={[
+                'Sr No.',
+                'Team No.',
+                'Player Name',
+                'Price (CR)'
+            ]}
+            rows={createRows()}
+            width={['10%', '20%', '40%', '30%']}
+            maxWidth="992px"
+        />
     )
 }
 
