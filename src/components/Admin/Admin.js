@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Grid, Paper, Container } from '@material-ui/core'
 import { Typography, TextField, Button } from '@material-ui/core'
 import { Alert, Autocomplete } from '@material-ui/lab'
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core/'
 
 import SportsCricketIcon from '@material-ui/icons/SportsCricket'
 
@@ -24,7 +25,8 @@ const useStyle = makeStyles({
         'transform': 'translateY(-12%)',
     },
     button:{
-        float:'right',
+        'float': 'right',
+        'margin': '5px'
     }
 })
 
@@ -36,6 +38,8 @@ const Admin = () => {
     const [ team, setTeam ] = useState('')
     const [ player, setPlayer ] = useState(null)
     const [ price, setPrice ] = useState('')
+
+    const [ toggleDeleteBox, setToggleDeleteBox ] = useState(false)
 
     const token = localStorage.getItem('token')
 
@@ -98,6 +102,42 @@ const Admin = () => {
         }
     }
 
+    const deleteBoxOpen = () => {
+        if(player){
+            setToggleDeleteBox(true)
+        } else {
+            setError('Please select a player first')
+        }
+    }
+
+    const deleteBoxClose = () => {
+        setToggleDeleteBox(false)
+    }
+
+    const handleDelete = () => {
+        setError('')
+        setSuccess('')
+        if(player){
+            const index = players.findIndex((p) => p === player)
+            const data = players[index]
+
+            axios.delete(`https://virtual-ipl-api.herokuapp.com/api/player/${data.id}/`, {
+                'headers': {
+                    'Authorization': `Token ${token}`,
+                }
+            })
+            .then((response) => {
+                console.log(response.data)
+                setSuccess('Player removed from his team.')
+                setToggleDeleteBox(false)
+            })
+            .catch((err) => {
+                console.log(err)
+                setToggleDeleteBox(false)
+            })
+        }
+    }
+
     return (
         <React.Fragment>
             <Navbar>
@@ -150,6 +190,18 @@ const Admin = () => {
 
                         <Grid item xs={12}>
                             <Button type="submit" variant="contained" color="primary" className={classes.button} onClick={handleSubmit}>Submit</Button>
+                            <Button type="submit" variant="contained" color="secondary" className={classes.button} onClick={deleteBoxOpen}>Delete</Button>
+
+                            <Dialog open={toggleDeleteBox} onClose={deleteBoxClose}>
+                                <DialogTitle>Delete</DialogTitle>
+                                <DialogContent>
+                                    <DialogContentText>Are you sure? This will remove the player from his team. </DialogContentText>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button type="submit" variant="outlined" color="secondary" onClick={handleDelete}>Delete</Button>
+                                    <Button autoFocus variant="outlined" onClick={deleteBoxClose}>Cancel</Button>
+                                </DialogActions>
+                            </Dialog>
                         </Grid>
 
                     </Grid>
