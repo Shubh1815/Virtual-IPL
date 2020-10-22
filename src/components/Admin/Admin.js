@@ -8,6 +8,7 @@ import { Alert, Autocomplete } from '@material-ui/lab'
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core/'
 
 import SportsCricketIcon from '@material-ui/icons/SportsCricket'
+import LinearProgress from '@material-ui/core/LinearProgress'
 
 import Navbar from './Navbar/Navbar'
 
@@ -40,6 +41,8 @@ const Admin = () => {
     const [ price, setPrice ] = useState('')
 
     const [ toggleDeleteBox, setToggleDeleteBox ] = useState(false)
+
+    const [ loading, setLoading ] = useState(false)
 
     const token = localStorage.getItem('token')
 
@@ -85,6 +88,8 @@ const Admin = () => {
                 team: Number(team),
             }
             
+            setLoading(true)
+
             axios.put(`https://virtual-ipl-api.herokuapp.com/api/player/${data.id}/`, data, {
                 'headers': {
                     'Authorization': `Token ${token}`,
@@ -92,9 +97,11 @@ const Admin = () => {
             })
             .then((response) => {
                 console.log(response.data)
+                setLoading(false)
                 setSuccess("Player Added")
             })
             .catch((err) => {
+                setLoading(false)
                 setError(err.response.data.error)
             })
         } else {
@@ -121,6 +128,8 @@ const Admin = () => {
             const index = players.findIndex((p) => p === player)
             const data = players[index]
 
+            setLoading(true)
+
             axios.delete(`https://virtual-ipl-api.herokuapp.com/api/player/${data.id}/`, {
                 'headers': {
                     'Authorization': `Token ${token}`,
@@ -128,11 +137,13 @@ const Admin = () => {
             })
             .then((response) => {
                 console.log(response.data)
+                setLoading(false)
                 setSuccess('Player removed from his team.')
                 setToggleDeleteBox(false)
             })
             .catch((err) => {
                 console.log(err)
+                setLoading(false)
                 setToggleDeleteBox(false)
             })
         }
@@ -143,6 +154,7 @@ const Admin = () => {
             <Navbar>
                 <Button component={Link} to="/leaderboard" variant="contained" size="small" >Leaderboard</Button>
             </Navbar>
+            { loading && <LinearProgress />}
             <Container>
                 <Box display='flex' justifyContent='center' alignItems='center' className={classes.root}>
                     <Grid container spacing={2} className={classes.form} component={Paper} elevation={3}>
