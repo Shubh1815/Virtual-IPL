@@ -6,8 +6,12 @@ import { AppBar, Toolbar, Typography } from '@material-ui/core'
 import SportsCricketIcon from '@material-ui/icons/SportsCricketTwoTone'
 
 const useStyle = makeStyles((theme) => ({
+    root:{
+        'display': 'flex',
+        'justify-content': 'space-between',
+        'align-items': 'center' 
+    },
     title: {
-        'flex-grow': 1,
         'text-decoration': 'none',
         [theme.breakpoints.down('sm')]: {
             'font-size': '1.15em',
@@ -24,7 +28,7 @@ const MainNavbar = (props) => {
 
     return(
         <AppBar position="sticky">
-            <Toolbar>
+            <Toolbar classes={{root: classes.root}}>
                 <Typography component={Link} to="/" variant="h5" className={classes.title} color="inherit">
                     <SportsCricketIcon  color="secondary" fontSize="large"/> Virtual IPL 
                 </Typography>
