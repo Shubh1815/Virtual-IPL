@@ -18,12 +18,6 @@ const useStyle = makeStyles({
         ...styles.table,
         'max-width': '764px',
     },
-    tableBody: {
-        '& > tr > td': {
-            'background-color': 'inherit',
-            'color': 'inherit',
-        }
-    }
 })
 
 const Leaderboard = () => {
