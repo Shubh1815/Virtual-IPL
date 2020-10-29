@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-
+import CopyrightIcon from '@material-ui/icons/Copyright'
 import DataTable from '../DataTable/DataTable'
 import Context from '../../../Context/Context'
 
@@ -13,7 +13,9 @@ const Team = (props) => {
     const [ state, setState ] = useState({
         'team': {
             'team_no': '',
-            'budget': ''
+            'budget': '',
+            'captain_name': '',
+            'captain_rating' : ''
         },
         'players': [],  
     })
@@ -34,7 +36,14 @@ const Team = (props) => {
 
     const createRows = () => (
         state.players.map((player, i) => (
-            [i + 1, player.player_name, player.player_type, `${player.price} CR`]
+            [
+                i + 1, 
+                 <React.Fragment>
+                    {player.player_name} {(player.player_name === state.team.captain_name ? <CopyrightIcon style={{verticalAlign: 'middle'}}/> : '')} 
+                 </React.Fragment>, 
+                player.player_type, 
+                `${player.price} CR`
+            ]
         ))
     )
 

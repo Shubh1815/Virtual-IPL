@@ -13,23 +13,29 @@ import LinearProgress from '@material-ui/core/LinearProgress'
 import Navbar from './Navbar/Navbar'
 
 import axios from 'axios'
+import Captain from './Captain/Captain'
 
-const useStyle = makeStyles({
+const useStyle = makeStyles((theme) => ({
     root: {
         'min-height': 'calc(100vh - 64px)',
+        [theme.breakpoints.down('sm')] : {
+            'margin-top': '60px',
+            'flex-direction': 'column'
+        },
     },
     form: {
-        'width': '500px',
+        'max-width': '500px',
         'background': 'white',
         'padding': '15px',
         'border-radius': '10px',
         'transform': 'translateY(-12%)',
+        'margin': '0 20px',
     },
     button:{
         'float': 'right',
         'margin': '5px'
     }
-})
+}))
 
 const Admin = () => {
     const [ players, setPlayers ] = useState([])
@@ -158,7 +164,6 @@ const Admin = () => {
             <Container>
                 <Box display='flex' justifyContent='center' alignItems='center' className={classes.root}>
                     <Grid container spacing={2} className={classes.form} component={Paper} elevation={3}>
-            
                         <Grid item xs={12}>
                             <Typography component="div" variant="h4"><SportsCricketIcon color="secondary" fontSize="large"/> Virtual IPL</Typography>
                             { error ? (<Alert severity="error">{error}</Alert>) : null }
@@ -216,6 +221,9 @@ const Admin = () => {
                             </Dialog>
                         </Grid>
 
+                    </Grid>
+                    <Grid container spacing={2} className={classes.form} component={Paper} elevation={3}>
+                        <Captain players={players} />
                     </Grid>
                 </Box>   
             </Container>
