@@ -52,7 +52,7 @@ const LoginPage = () => {
             'password': password,
         }
         context.setLoading(true)
-        axios.post('https://virtual-ipl-api.herokuapp.com/auth/login/', data)
+        axios.post('http://127.0.0.1:8000/auth/login/', data)
         .then((response) => {
             localStorage.setItem('token', response.data.key)
             console.log(response.data)

@@ -31,7 +31,7 @@ const Leaderboard = () => {
 
     useEffect(() => {
         setLoading(true)
-        axios.get('https://virtual-ipl-api.herokuapp.com/api/leaderboard/', {
+        axios.get('http://127.0.0.1:8000/api/leaderboard/', {
             'headers': {
                 'Authorization': `Token ${token}`,
             }

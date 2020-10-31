@@ -34,7 +34,7 @@ const Captain = ({ players }) => {
 
     const handleSubmit = () => {
         if(team && captain){
-            axios.put(`https://virtual-ipl-api.herokuapp.com/api/team/${team}/`, {
+            axios.put(`http://127.0.0.1:8000/api/team/${team}/`, {
                 "captain_name": captain.player_name,
                 "captain_rating": captain.player_rating
             })

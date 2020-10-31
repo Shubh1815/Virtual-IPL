@@ -13,7 +13,7 @@ const Top10 = () => {
 
     useEffect(() => {
         setLoading(true)
-        axios.get('https://virtual-ipl-api.herokuapp.com/api/top10/')
+        axios.get('http://127.0.0.1:8000/api/top10/')
         .then((response) => {
             console.log(response.data)
             setTop10(response.data.top10)
